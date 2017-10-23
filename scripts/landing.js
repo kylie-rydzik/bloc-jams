@@ -9,9 +9,17 @@ var animatePoints = function(points) {
 
   }
 
-  for (var i=0; i < points.length; i++) {
+  var forEach = function(callback) {
+    for (var i = 0; i < points.length; i++) {
+      callback(i);
+    }
+  };
+
+  forEach(revealPoint);
+
+/*  for (var i=0; i < points.length; i++) {
     revealPoint(i);
-}
+} */
 
 };
 

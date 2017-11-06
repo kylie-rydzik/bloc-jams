@@ -28,6 +28,21 @@ var albumMarconi = {
   ]
 };
 
+var albumNoDoubt = {
+  title: 'Tragic Kingdom',
+  artist: 'No Doubt',
+  label: 'Trauma Records',
+  year: '1995',
+  albumArtUrl: 'assets/images/album_covers/01.png',
+  songs: [
+    { title: 'Spiderwebs', duration: '4:28' },
+    { title: 'Different People', duration: '4:35' },
+    { title: 'Sunday Morning', duration: '4:33' },
+    { title: 'End It on This', duration: '3:46' },
+    { title: 'Just a Girl', duration: '3:29' },
+  ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
     '<tr class="album-view-song-item">'
@@ -40,12 +55,14 @@ var createSongRow = function(songNumber, songName, songLength) {
     return template;
 };
 
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 var setCurrentAlbum = function(album) {
-  var albumTitle = document.getElementsByClassName('album-view-title')[0];
-  var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-  var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-  var albumImage = document.getElementsByClassName('album-cover-art')[0];
-  var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 
   albumTitle.firstChild.nodeValue = album.title;
   albumArtist.firstChild.nodeValue = album.artist;
@@ -61,4 +78,16 @@ var setCurrentAlbum = function(album) {
 
 window.onload = function () {
   setCurrentAlbum(albumPicasso);
+
+
+  var albums = [albumPicasso, albumMarconi, albumNoDoubt];
+  var index = 1;
+
+  albumImage.addEventListener("click", function(event) {
+    setCurrentAlbum(albums[index]);
+    index++;
+    if (index == albums.length) {
+      index = 0;
+    }
+  });
 };

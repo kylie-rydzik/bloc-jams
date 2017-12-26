@@ -182,6 +182,7 @@ var previousSong = function() {
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
+var $playPause = $('.main-controls .play-pause');
 
 $(document).ready(function() {
   setCurrentAlbum(albumPicasso);
@@ -191,11 +192,27 @@ $(document).ready(function() {
   var albums = [albumPicasso, albumMarconi, albumNoDoubt];
   var index = 1;
 
+
   albumImage.addEventListener("click", function(event) {
     setCurrentAlbum(albums[index]);
     index++;
     if (index == albums.length) {
       index = 0;
     }
+  });
+
+  playPause.addEventListener("click", function() {
+    var togglePlayFromPlayerBar = function() {
+      if (playPause === playerBarPlayButton) {
+        $('.song-item-number[data-song-number="' + playerBarPauseButton + '"]');
+        $('playPause').html(playerBarPauseButton);
+        currentSoundFile.play();
+      }
+      if (playPause === playerBarPauseButton) {
+        $('.song-item-number[data-song-number="' + playerBarPlayButton + '"]');
+        $('playPause').html(playerBarPlayButton);
+        currentSoundFile.play();
+      }
+    };
   });
 });

@@ -44,8 +44,8 @@ var clickHandler = function() {
       if (currentlyPlayingSongNumber !== songNumber) {
         $(this).html(pauseButtonTemplate);
         setSong(songNumber);
-        updatePlayerBarSong();
         currentSoundFile.play();
+        updatePlayerBarSong();
       } else if (currentlyPlayingSongNumber === songNumber) {
           if (currentSoundFile.isPaused()) {
                 $(this).html(pauseButtonTemplate);
@@ -184,6 +184,18 @@ var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 var $playPause = $('.main-controls .play-pause');
 
+var togglePlayFromPlayerBar = function() {
+  if (playPause === playerBarPlayButton) {
+    var $pauseSongNumberCell = $('.song-item-number[data-song-number="' + playerBarPauseButton + '"]');
+    $('playPause').html(playerBarPauseButton);
+    currentSoundFile.play();
+  } else {
+    var $playSongNumberCell = $('.song-item-number[data-song-number="' + playerBarPlayButton + '"]');
+    $('playPause').html(playerBarPlayButton);
+    currentSoundFile.play();
+  }
+};
+
 $(document).ready(function() {
   setCurrentAlbum(albumPicasso);
   $previousButton.click(previousSong);
@@ -201,18 +213,7 @@ $(document).ready(function() {
     }
   });
 
-  playPause.addEventListener("click", function() {
-    var togglePlayFromPlayerBar = function() {
-      if (playPause === playerBarPlayButton) {
-        $('.song-item-number[data-song-number="' + playerBarPauseButton + '"]');
-        $('playPause').html(playerBarPauseButton);
-        currentSoundFile.play();
-      }
-      if (playPause === playerBarPauseButton) {
-        $('.song-item-number[data-song-number="' + playerBarPlayButton + '"]');
-        $('playPause').html(playerBarPlayButton);
-        currentSoundFile.play();
-      }
-    };
+  playPause.addEventListener("click", function(event) {
+      togglePlayFromPlayerBar();
   });
 });

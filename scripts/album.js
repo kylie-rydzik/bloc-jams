@@ -129,6 +129,12 @@ var updateSeekBarWhileSongPlays = function() {
       updateSeekPercentage($seekBar, seekBarFillRatio);
     });
   }
+
+  var currentTime = currentSoundFile.getDuration() - currentSoundFile.getTime();
+
+  var setCurrentTimeInPlayerBar = function(currentTime) {
+    $(".current-time").text(currentTime);
+  };
 };
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
@@ -194,6 +200,15 @@ var updatePlayerBarSong = function() {
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
 
   $('.main-controls .play-pause').html(playerBarPauseButton);
+
+  var setTotalTimeInPlayerBar = function(totalTime) {
+    $('.total-time').text(currentSoundFile.getDuration());
+  };
+};
+
+var filterTimeCode = function(timeInSeconds) {
+  var time = parseFloat(timeInSeconds);
+  return Math.floor(time);
 };
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
@@ -264,15 +279,15 @@ var $nextButton = $('.main-controls .next');
 var $playPause = $('.main-controls .play-pause');
 
 var togglePlayFromPlayerBar = function() {
-  if (playPause === playerBarPlayButton) {
-    var $pauseSongNumberCell = $('.song-item-number[data-song-number="' + playerBarPauseButton + '"]');
-    $('playPause').html(playerBarPauseButton);
-    currentSoundFile.play();
-  } else {
-    var $playSongNumberCell = $('.song-item-number[data-song-number="' + playerBarPlayButton + '"]');
-    $('playPause').html(playerBarPlayButton);
-    currentSoundFile.play();
-  }
+    if (currentSoundFile.isPaused()) {
+        $('[data-song-number="' + currentlyPlayingSongNumber + '"]').html(pauseButtonTemplate);
+        $(playPause).html(playerBarPauseButton);
+        currentSoundFile.play();
+    } else {
+        $('[data-song-number="' + currentlyPlayingSongNumber + '"]').html(playButtonTemplate);
+        $(playPause).html(playerBarPlayButton);
+        currentSoundFile.pause();
+    }
 };
 
 $(document).ready(function() {
@@ -293,7 +308,6 @@ $(document).ready(function() {
     }
   });
 
-  playPause.addEventListener("click", function(event) {
-      togglePlayFromPlayerBar();
-  });
+  $(playPause).on("click", togglePlayFromPlayerBar);
+
 });

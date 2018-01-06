@@ -281,11 +281,11 @@ var $playPause = $('.main-controls .play-pause');
 var togglePlayFromPlayerBar = function() {
     if (currentSoundFile.isPaused()) {
         $('[data-song-number="' + currentlyPlayingSongNumber + '"]').html(pauseButtonTemplate);
-        $(playPause).html(playerBarPauseButton);
+        $($playPause).html(playerBarPauseButton);
         currentSoundFile.play();
     } else {
         $('[data-song-number="' + currentlyPlayingSongNumber + '"]').html(playButtonTemplate);
-        $(playPause).html(playerBarPlayButton);
+        $($playPause).html(playerBarPlayButton);
         currentSoundFile.pause();
     }
 };
@@ -299,8 +299,9 @@ $(document).ready(function() {
   var albums = [albumPicasso, albumMarconi, albumNoDoubt];
   var index = 1;
 
+  $($playPause).on("click", togglePlayFromPlayerBar);
 
-  albumImage.addEventListener("click", function(event) {
+  $($albumImage).on("click", function(event) {
     setCurrentAlbum(albums[index]);
     index++;
     if (index == albums.length) {
@@ -308,6 +309,6 @@ $(document).ready(function() {
     }
   });
 
-  $(playPause).on("click", togglePlayFromPlayerBar);
+
 
 });

@@ -25,6 +25,16 @@ var setVolume = function(volume) {
   }
 };
 
+var filterTimeCode = function(timeInSeconds) {
+  var minutes = parseFloat(timeInSeconds) / 60;
+  var seconds = parseFloat(timeInSeconds) % 60;
+  if (seconds < 10) {
+    return Math.floor(minutes) + ":0" + Math.floor(seconds);
+  } else {
+    return Math.floor(minutes) + ":" + Math.floor(seconds);
+  }
+};
+
 var getSongNumberCell = function(number) {
   return $('.song-item-number[data-song-number="' + number + '"]');
 };
@@ -34,7 +44,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     '<tr class="album-view-song-item">'
     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + '  <td class="song-item-title">' + songName + '</td>'
-    + '  <td class="song-item-duration">' + songLength + '</td>'
+    + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>'
     ;
 
@@ -127,14 +137,18 @@ var updateSeekBarWhileSongPlays = function() {
       var $seekBar = $('.seek-control .seek-bar');
 
       updateSeekPercentage($seekBar, seekBarFillRatio);
+
+      var currentTime = currentSoundFile.getDuration() - currentSoundFile.getTime();
+
+      var setCurrentTimeInPlayerBar = function(currentTime) {
+          $('.current-time').text(filterTimeCode(currentSoundFile.getTime()));
+      };
+
+      setCurrentTimeInPlayerBar();
+
     });
   }
 
-  var currentTime = currentSoundFile.getDuration() - currentSoundFile.getTime();
-
-  var setCurrentTimeInPlayerBar = function(currentTime) {
-    $(".current-time").text(currentTime);
-  };
 };
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
@@ -201,14 +215,12 @@ var updatePlayerBarSong = function() {
 
   $('.main-controls .play-pause').html(playerBarPauseButton);
 
-  var setTotalTimeInPlayerBar = function(totalTime) {
-    $('.total-time').text(currentSoundFile.getDuration());
-  };
-};
 
-var filterTimeCode = function(timeInSeconds) {
-  var time = parseFloat(timeInSeconds);
-  return Math.floor(time);
+  var setTotalTimeInPlayerBar = function(totalTime) {
+    $('.total-time').text(filterTimeCode(currentSongFromAlbum.duration));
+  };
+
+  setTotalTimeInPlayerBar();
 };
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
